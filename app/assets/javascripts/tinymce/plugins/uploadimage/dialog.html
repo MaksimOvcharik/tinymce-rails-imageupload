@@ -56,25 +56,20 @@
 
         insert: function() {
           // Detach events first, then attach to avoid double event triggering
-          if(this.iframe.attachEvent) {
-            this.iframe.detachEvent('onload', UploadImageDialog.uploadDone);
-            this.iframe.attachEvent('onload', UploadImageDialog.uploadDone);
-          } else {
-            this.iframe.removeEventListener('load', UploadImageDialog.uploadDone);
-            this.iframe.addEventListener('load', UploadImageDialog.uploadDone, false);
+          document.getElementById("hidden_upload").onload = function() {
+            UploadImageDialog.uploadDone()
           }
           var input = document.getElementById("file_upload");
-
           if(input.value != "") {
-            top.tinymce.DOM.removeClass(document.getElementById("upload_spinner"), 'inactive');
-            this.f.submit();
+            //top.tinymce.DOM.removeClass(document.getElementById("upload_spinner"), 'inactive');
+            document.forms[0].submit();
           } else {
             this.handleError('You must choose a file');
           }
         },
 
         uploadDone: function() {
-          top.tinymce.DOM.addClass(document.getElementById("upload_spinner"), 'inactive');
+          //top.tinymce.DOM.addClass(document.getElementById("upload_spinner"), 'inactive');
           var iframe = document.getElementById("hidden_upload");
           if(iframe.document || iframe.contentDocument) {
             var doc = iframe.contentDocument || iframe.contentWindow.document;
